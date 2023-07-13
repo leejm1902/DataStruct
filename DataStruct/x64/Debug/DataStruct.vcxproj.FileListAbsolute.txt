@@ -1,1 +1,2 @@
 C:\Users\user\Desktop\C++\DataStruct\x64\Debug\DataStruct.exe
+C:\Users\user\Desktop\C++\DataStruct\DataStruct\x64\Debug\DataStruct.exe

@@ -1,91 +1,116 @@
 ﻿#include <iostream>
 
-
 struct NODE
 {
     int data;
     NODE* next;
+    NODE* prev;
 };
 
-class LinkedList
+template <typename T>
+class DoubleLinkedList
 {
 private:
     NODE* head;
     NODE* tail;
 
-    int size;
-
 public:
-
-    LinkedList()
+    DoubleLinkedList()
     {
         head = nullptr;
         tail = nullptr;
-
-        size = 0;
     }
-
-    void Push_Front(int data)
+   
+    void Push_Front(T data)
     {
-        // 1. 새로운 노드를 생성합니다.
         NODE* newNode = new NODE;
-
-        // 2. 새로운 노드의 data 값을 저장합니다. <- 매개 변수로
         newNode->data = data;
-
-        // 3. 새로운 노드 next 값은 NULL로 저장합니다.
         newNode->next = nullptr;
+        newNode->prev = nullptr;
 
-        // if()
+        if (head == nullptr)
+        {
+            head = newNode;
+            tail = newNode;
+        }
+
+        else
+        {
+            newNode->next = head;
+            head->prev = newNode;
+            head = newNode;
+        }
     }
 
     void Push_Back(int data)
     {
-        // 1. 새로운 노드를 생성합니다.
         NODE* newNode = new NODE;
-
-        // 2. 새로운 노드의 data 값을 저장합니다. <- 매개 변수로
         newNode->data = data;
-
-        // 3. 새로운 노드 next 값은 NULL로 저장합니다.
         newNode->next = nullptr;
+        newNode->prev = nullptr;
+
+        if (head == nullptr)
+        {
+            head = newNode;
+            tail = newNode;
+        }
+
+        else
+        {
+            newNode->prev = tail;
+            tail->next = newNode;
+            tail = newNode;
+        }
     }
 
-    void Insert(NODE* prevNode, int data)
+    void Pop_Front()
     {
+        if (head == nullptr)
+        {
+            return;
+        }
+
+        else
+        {
+            NODE* removePtr = head;
+            head = head->next;
+            head->prev = nullptr;
+            delete removePtr;
+        }
 
     }
 
     void Pop_Back()
     {
+        if (head == nullptr)
+        {
+            return;
+        }
+
+        else
+        {
+            NODE* removePtr = tail;  
+            tail = tail->prev;  
+            tail->next = nullptr;
+            delete removePtr;
+        }
 
     }
 
-    void Pop_front()
+    ~DoubleLinkedList()
     {
 
     }
 
-    int Size()
-    {
-        return size;
-    }
-
-    ~LinkedList()
-    {
-
-    }
 };
 
 
 int main()
 {
 
-    LinkedList list;
+    DoubleLinkedList<int> list;
 
-    list.Push_Back(10);
-
-
+    list.Push_Front(10);
 
 
     return 0;

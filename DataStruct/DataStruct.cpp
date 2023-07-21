@@ -1,91 +1,132 @@
 ﻿#include <iostream>
-#include <vector>
+#include <queue>
+
+#define SIZE 5
 
 template <typename T>
-class VECTOR
+class LinearQueue
 {
 private:
-    int capacity = 0;
-    int size = 0;
+    int front;
+    int rear;
+    int size;
 
-    T* array;
+    T array[SIZE];
 
 public:
-    VECTOR()
+    LinearQueue()
     {
-        capacity = 1;
-        array = new T[capacity];
+        front = 0;
+        rear = 0;
+        size = 0;
     }
 
-    void Push_Back(T data)
+    // Push
+    void Push(T data)
     {
-        if (size >= capacity)
+        if (IsFull() == true)
         {
-            capacity *= 2;
-
-            Resize(capacity);
-        }
-        array[size++] = data;
-    }
-
-    void Pop_Back()
-    {
-        if (size <= 0)
-        {
-            return;
+            std::cout << "Queue의 사이즈가 가득 찼습니다." << std::endl;
         }
 
-        array[--size] == NULL;
+        array[rear++] = data;
+        size++;
+    }
+    
+    // Pop
+    void Pop()
+    {
+        if (Empty() == true)
+        {
+            std::cout << "Queue가 비어있습니다." << std::endl;
+            exit(1);
+        }
+
+        array[front++] = NULL;
+        size--;
     }
 
-    int Size()
+    // Size
+    int & Size()
     {
         return size;
     }
 
-    void Resize(int size)
+    // Front
+    T & Front()
     {
-        // capacity에 새로운 size 값을 설정한다.
-        capacity = size;
+        return array[front];
+    }
 
-        // 새로운 포인터 변수를 생성해서 새롭게 만들어진 메모리 공간을 가리키도록 설정합니다.
-        T* tempArray = new T[size];
+    // Back
+    T& Back()
+    {
+        return array[rear - 1];
+    }
 
-        // 새로운 메모리 공간의 값을 초기화합니다.
-        for (int i = 0; i < size; i++)
+    // Empty
+    bool Empty()
+    {
+        if (front == rear)
         {
-            tempArray[i] = NULL;
+            return true;
         }
 
-        // 기존 배열에 있는 값을 복사해서 새로운 배열에 넣어줍니다.
-        for (int i = 0; i < this->size; i++)
+        else
         {
-            tempArray[i] = array[i];
+            return false;
         }
-        
-        // array에 메모리 주소를 해제합니다.
-        delete(array);
-
-        // array에 새로 할당한 메모리의 주소를 저장합니다.
-        array = tempArray;
-        array 
     }
 
-    // 연산자 오버로딩 [ ]
-    T& operator [] (const int& value)
+    // IsFull
+    bool IsFull()
     {
-        return array[value];
-    }
+        if (SIZE <= rear)
+        {
+            return true;
+        }
 
-    ~VECTOR() 
-    {
-        delete(array);
+        else
+        {
+            return false;
+        }
     }
-
 };
+
+
+
 
 int main()
 {
+#pragma region 선형 큐
+    // 배열의 공간에 들어간 데이터가 고정되어
+    // 데이터를 빼내더라도 초기화를 하지 않으면 
+    // 원래 데이터가 있던 배열의 자리에 더 이상 다른 것이 들어갈 수 없는 형태의 Queue입니다.
+
+    LinearQueue<int> linearQueue;
+
+    linearQueue.Push(10);
+    linearQueue.Push(20);
+    linearQueue.Push(30);
+    linearQueue.Push(40);
+    linearQueue.Push(50);
+
+    linearQueue.Pop();
+    linearQueue.Pop();
+    linearQueue.Pop();
+    linearQueue.Pop();
+    linearQueue.Pop();
+
+    linearQueue.Push(9999);
+
+    std::cout << linearQueue.Size() << std::endl;
+    std::cout << linearQueue.Front() << std::endl;
+    std::cout << linearQueue.Back() << std::endl;
+
+
+
+#pragma endregion
+
 
 
 

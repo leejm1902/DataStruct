@@ -1,87 +1,67 @@
 ﻿#include <iostream>
-#include <queue>
 
-#define SIZE 5
+#define SIZE 4
 
 template <typename T>
-class LinearQueue
+class CircleQueue
 {
 private:
     int front;
     int rear;
-    int size;
 
-    T array[SIZE];
+    T buffer[SIZE] = { 0, };
 
 public:
-    LinearQueue()
+    CircleQueue()
     {
-        front = 0;
-        rear = 0;
-        size = 0;
+        front = SIZE - 1;
+        rear = SIZE - 1;
     }
 
-    // Push
     void Push(T data)
     {
         if (IsFull() == true)
         {
-            std::cout << "Queue의 사이즈가 가득 찼습니다." << std::endl;
+            std::cout << "Queue가 가득 찼습니다." << std::endl;
         }
 
-        array[rear++] = data;
-        size++;
+        else
+        {
+            rear = (rear + 1) % SIZE;
+            buffer[rear] = data;
+        }
     }
-    
-    // Pop
+
     void Pop()
     {
         if (Empty() == true)
         {
             std::cout << "Queue가 비어있습니다." << std::endl;
-            exit(1);
         }
 
-        array[front++] = NULL;
-        size--;
+        else
+        {
+            front = (front + 1) % SIZE;
+            buffer[front] = NULL;
+        }
     }
 
-    // Size
-    int & Size()
-    {
-        return size;
-    }
-
-    // Front
-    T & Front()
-    {
-        return array[front];
-    }
-
-    // Back
-    T& Back()
-    {
-        return array[rear - 1];
-    }
-
-    // Empty
     bool Empty()
     {
         if (front == rear)
         {
             return true;
         }
-
+        
         else
         {
             return false;
         }
     }
 
-    // IsFull
     bool IsFull()
     {
-        if (SIZE <= rear)
+        if (front == (rear + 1) % 4)
         {
             return true;
         }
@@ -91,45 +71,47 @@ public:
             return false;
         }
     }
+
+    T& Front()
+    {
+        return buffer[(front + 1) % SIZE];
+    }
+
+    T& Back()
+    {
+        return buffer[rear];
+    }
+
 };
-
-
 
 
 int main()
 {
-#pragma region 선형 큐
-    // 배열의 공간에 들어간 데이터가 고정되어
-    // 데이터를 빼내더라도 초기화를 하지 않으면 
-    // 원래 데이터가 있던 배열의 자리에 더 이상 다른 것이 들어갈 수 없는 형태의 Queue입니다.
 
-    LinearQueue<int> linearQueue;
+#pragma region 원형 큐
+    // 물리적으로는 선형 구조를 가지고 있으며,
+    // 큐의 시작점과 끝점을 연결한 큐입니다.
 
-    linearQueue.Push(10);
-    linearQueue.Push(20);
-    linearQueue.Push(30);
-    linearQueue.Push(40);
-    linearQueue.Push(50);
+    CircleQueue<int> circleQueue;
 
-    linearQueue.Pop();
-    linearQueue.Pop();
-    linearQueue.Pop();
-    linearQueue.Pop();
-    linearQueue.Pop();
+    circleQueue.Push(10);
+    circleQueue.Push(20);
+    circleQueue.Push(30);
 
-    linearQueue.Push(9999);
+    // circleQueue.Push(40);
 
-    std::cout << linearQueue.Size() << std::endl;
-    std::cout << linearQueue.Front() << std::endl;
-    std::cout << linearQueue.Back() << std::endl;
+    circleQueue.Pop();
+    circleQueue.Pop();
+    circleQueue.Pop();
+    
+    circleQueue.Push(999);
 
+    std::cout << circleQueue.Front() << std::endl;
+    std::cout << circleQueue.Back() << std::endl;
 
 
 #pragma endregion
-
-
-
-
+    
 
 
     return 0;

@@ -1,117 +1,103 @@
 ﻿#include <iostream>
 
-#define SIZE 4
+#define SIZE 5
 
-template <typename T>
-class CircleQueue
+class Component
 {
 private:
-    int front;
-    int rear;
-
-    T buffer[SIZE] = { 0, };
+    float x;
+    float y;
+    int* count;
 
 public:
-    CircleQueue()
+    // 기본 생성자
+    Component()
     {
-        front = SIZE - 1;
-        rear = SIZE - 1;
+        x = 10;
+        y = 20;
+        count = new int;
+    }
+    
+    // 복사 생성자
+    Component(Component& other)
+    {
+        std::cout << "복사 생성자" << std::endl;
+
+        this->x = other.x;
+        this->y = other.y;
+
+        // 깊은 복사
+        other.count = new int;
     }
 
-    void Push(T data)
+    // 이동 생성자
+    Component(Component&& other)
     {
-        if (IsFull() == true)
-        {
-            std::cout << "Queue가 가득 찼습니다." << std::endl;
-        }
+        std::cout << "이동 생성자" << std::endl;
 
-        else
-        {
-            rear = (rear + 1) % SIZE;
-            buffer[rear] = data;
-        }
-    }
+        this->x = other.x;
+        this->y = other.y;
 
-    void Pop()
-    {
-        if (Empty() == true)
-        {
-            std::cout << "Queue가 비어있습니다." << std::endl;
-        }
+        this->count = other.count;  
 
-        else
-        {
-            front = (front + 1) % SIZE;
-            buffer[front] = NULL;
-        }
-    }
+        other.count = nullptr;
 
-    bool Empty()
-    {
-        if (front == rear)
-        {
-            return true;
-        }
-        
-        else
-        {
-            return false;
-        }
-    }
 
-    bool IsFull()
-    {
-        if (front == (rear + 1) % 4)
-        {
-            return true;
-        }
-
-        else
-        {
-            return false;
-        }
-    }
-
-    T& Front()
-    {
-        return buffer[(front + 1) % SIZE];
-    }
-
-    T& Back()
-    {
-        return buffer[rear];
     }
 
 };
 
-
 int main()
 {
 
-#pragma region 원형 큐
-    // 물리적으로는 선형 구조를 가지고 있으며,
-    // 큐의 시작점과 끝점을 연결한 큐입니다.
-
-    CircleQueue<int> circleQueue;
-
-    circleQueue.Push(10);
-    circleQueue.Push(20);
-    circleQueue.Push(30);
-
-    // circleQueue.Push(40);
-
-    circleQueue.Pop();
-    circleQueue.Pop();
-    circleQueue.Pop();
-    
-    circleQueue.Push(999);
-
-    std::cout << circleQueue.Front() << std::endl;
-    std::cout << circleQueue.Back() << std::endl;
-
-
+#pragma region 삽입 정렬
+    // // 두번째 자료부터 시작하여 그 앞(왼쪽)의 자료들과 비교하여 삽입할 위치를 지정한 후
+    // // 자료를 뒤로 옮기고 지정한 자리에 자료를 삽입하여 정렬하는 알고리즘입니다.
+    // 
+    // // 시간 복잡도 O(n^2)
+    // 
+    // int array[SIZE] = { 5, 8, 6, 1, 2 };    
+    // int temp = 0;
+    // 
+    // int j = 0;
+    // 
+    // // j가 -1까지 떨어집니다.
+    // for (int i = 1; i < SIZE; i++)
+    // {
+    //     temp = array[i]; // temp = 7
+    // 
+    //     for (j = i - 1; j >= 0; j--)
+    //     {
+    //         if (array[j] > temp)
+    //         {
+    //             array[j + 1] = array[j];
+    //         }
+    // 
+    //         else
+    //         {
+    //             break;
+    //         }
+    // 
+    //     }
+    // 
+    //     array[j + 1] = temp;
+    // }
+    // 
+    // for (const int& element : array)
+    // {
+    //     std::cout << element << std::endl;
+    // }
 #pragma endregion
-    
+
+#pragma region 이동 생성자
+    // 기존 객체의 주소 및 값을 새로운 오브젝트에 소유권을 이전시키는 생성자입니다.
+
+    Component component1;
+
+    Component component2 = component1;
+    Component component3 = std::move(component1);
+#pragma endregion
+
 
 
     return 0;

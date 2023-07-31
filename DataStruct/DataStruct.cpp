@@ -1,95 +1,47 @@
 ﻿#include <iostream>
 
-#define SIZE 8
+#define SIZE1 5
+#define SIZE2 10
 
-class MAX_HEAP
+int quickArray[10] = { 4,1,2,3,9,7,8,6,10,5 };
+
+void QuickSort(int data[], int start, int end)
 {
-private:
-    int heapArray[SIZE];
-    int index;
 
-public:
-    MAX_HEAP()
-    {
-        for (int i = 0; i < SIZE; i++)
-        {
-            heapArray[i] = NULL;
-        }
-
-        index = 0;
-    }
-    void Insert(int data)
-    {
-        if (index == SIZE - 1)
-        {
-            std::cout << "HEAP이 가득 찼습니다." << std::endl;
-            return;
-        }
-
-        heapArray[++index] = data;
-        
-        int child = index;
-        int parent = index / 2;
-
-        while (child > 1)
-        {
-            if (heapArray[parent] < heapArray[child])
-            {
-                std::swap(heapArray[parent], heapArray[child]);
-            }
-
-            child = parent;
-            parent = child / 2;
-        }
-
-    }
-
-    int& Delete()
-    {
-        // 1. 임시 변수 <- 제일 꼭대기에 있는 값을 저장합니다.
-
-        // 2. HEAP이 비어있다면 함수를 반환합니다.
-
-        // 3. index로 가리키는 배열의 값을 첫번째 배열의 값으로 넣어주면 됩니다.
-
-        // 4. index로 가리키는 배열의 값을 초기화합니다.
-
-        // 5. index를 감소시킵니다.
-
-        // 6. 부모 변수 <- 1
-
-        // 7. 반복문을 선언합니다. (부모 변수 * 2 <- index)
-    }
-
-    void Show()
-    {
-        for (int element : heapArray)
-        {
-            std::cout << element << std::endl;
-        }
-    }
-};
-
-
+}
 int main()
 {
 
-#pragma region 힙
-    // 여러 값들 중에서 최댓값 혹은 최솟값을 빠르게 찾아내기 위한 자료구조입니다.
+#pragma region 계수 정렬
+    // 데이터의 값을 직접 비교하지 않고
+    // 단순하게 각 숫자가 몇개 있는지 개수를 세어 저장한 다음 정렬하는 알고리즘입니다.
 
-    // 최대 힙
-    // 부모 노드의 키 값이 자식 노드의 키 값보다 크거나 같은 완전 이진 트리
-
-    MAX_HEAP maxHeap;
-
-    maxHeap.Insert(10);
-    maxHeap.Insert(20);
-
-    maxHeap.Show();
-
+    // int array[SIZE1] = { 0, };
+    // 
+    // int item[SIZE2] = { 1,5,3,4,4,3,1,2,5,1 };
+    // 
+    // for (int i = 0; i < SIZE2; i++)
+    // {
+    //     array[item[i] - 1] += 1;
+    // }
+    // 
+    // for (int i = 0; i < SIZE1; i++)
+    // {
+    //     std::cout << array[i] << std::endl;
+    // }
 
 #pragma endregion
 
+#pragma region 퀵 정렬
+    // 기준점을 획득한 다음 해당 기준점을 기준으로 배열을 나누고
+    // 한 쪽에는 기준점보다 작은 항목들이 위치하고 다른 쪽에는 기준점보다 큰 항목들이 위치한다.
+
+    // 나뉘어진 하위 배열에 대해 재귀적으로 퀵 정렬을 호출하여
+    // 모든 배열이 기본 배열(요소가 하나뿐인 배열)이 될 때까지 반복하는 알고리즘입니다.
+
+
+
+#pragma endregion
 
 
 

@@ -1,112 +1,122 @@
 ﻿#include <iostream>
 
-#pragma region 이진 탐색 트리 (BST)
-// 임의의 키를 가진 원소를 삽입, 삭제, 검색하는데 효율적인 트리입니다.
+#pragma region 원형 연결 리스트
+// 단순 연결 리스트에서 마지막 노드가 리스트의 첫번째 노드를 가리키는 리스트 구조를
+// 원형으로 만든 리스트입니다.
 
 struct Node
 {
     int data;
-    Node* left;
-    Node* right;
+    Node* next;
 };
 
-Node* Insert(Node* root, int data)
+class CircleLinkedList
 {
-    // if root가 nullptr 이라면?
-    if (root == nullptr)
+private:
+
+    int count;
+
+public:
+
+    CircleLinkedList(int m_count = 1)
     {
-        root = new Node;
-        root->data = data;
-        root->left = nullptr;
-        root->right = nullptr;
+        count = m_count;
+    };
+    
+    Node* Push_Front(Node* head, int data)
+    {
+        // 1. 새로운 노드를 생성합니다.
+        Node* newNode = new Node;
+
+        // 2. 새로운 노드의 data 값을 설정합니다.
+        newNode->data = data;
+
+        // 3. if(head가 nullptr이라면)
+        if (head == nullptr)
+        {
+            // head 포인터는 새로운 노드의 주소를 저장합니다.
+            head = newNode;
+            // 새로운 노드의 next가 자기 자신을 가리켜야 합니다.
+            newNode->next = head;
+
+        }
+
+        else
+        {
+            // 새로운 노드의 next는 head의 next를 가리키게 합니다.
+            newNode->next = head->next;
+            // head의 next는 새로운 노드를 가리키게 합니다.
+            head->next = newNode;
+        }
+
+        return head;
     }
 
-    // else if(root의 data보다 작다면?)
-    else if (data <= root->data)
+    Node* Push_Back(Node* head, int data)
     {
-        root->left = Insert(root->left, data);
+        // 1. 새로운 노드를 생성합니다.
+        Node* newNode = new Node;
+
+        // 2. 새로운 노드의 data 값을 설정합니다.
+        newNode->data = data;
+
+        // 3. if(head가 nullptr이라면)
+        if (head == nullptr)
+        {
+            // head 포인터는 새로운 노드의 주소를 저장합니다.
+            head = newNode;
+            // 새로운 노드의 next가 자기 자신을 가리켜야 합니다.
+            newNode->next = head;
+
+        }
+
+        else
+        {
+            // 새로운 노드의 next에 head의 next를 저장합니다.
+            newNode->next = head->next;
+            // head의 next가 새로운 노드의 주소를 가리킵니다.
+            head->next = newNode;
+            // head 포인터에 새로운 노드의 주소를 저장합니다.
+            head = newNode;
+        }
+
+        return head;
     }
 
-    // else(root의 data보다 크다면?)
-    else
+    void Information(Node* head)
     {
-        root->right = Insert(root->right, data);
+        if (head == nullptr)
+        {
+            return;
+        }
+
+        Node* currentNode = head->next;
+
+        while (currentNode != head)
+        {
+            std::cout << currentNode->data << std::endl;
+            currentNode = currentNode->next;
+        }
+
+        std::cout << currentNode->data << std::endl;
     }
-
-    // 주소값을 반환합니다.
-    return root;
-}
-
-int FindMax(Node* root)
-{
-    if (root == nullptr)
-    {
-        std::cout << "현재 데이터가 존재하지 않습니다." << std::endl;
-        return 0xcccccccc;
-    }
-
-    if (root->right == nullptr)
-    {
-        return root->data;
-    }
-
-    else
-    {
-        return FindMax(root->right);
-    }
-}
-
-int FindMin(Node* root)
-{
-    if (root == nullptr)
-    {
-        std::cout << "현재 데이터가 존재하지 않습니다." << std::endl;
-        return 0xcccccccc;
-    }
-
-    if (root->left == nullptr)
-    {
-        return root->data;
-    }
-
-    else
-    {
-        return FindMin(root->left);
-    }
-}
-
-Node* DeleteNode(Node* root, int key)
-{
-    if (root == nullptr)
-    {
-        std::cout << "현재 데이터가 존재하지 않습니다." << std::endl;
-        return root;
-    }
-
-    if (key < root->data)
-    {
-        root->left = DeleteNode(root->left, key);
-    }
-
-    else if (key > root->data)
-    {
-        root->right = DeleteNode(root->right, key);
-    }
-
-}
+};
 #pragma endregion
 
 
 int main()
 {
+    CircleLinkedList circleLinkedList;
 
-    Node* root = nullptr;
+    Node* head = nullptr;
 
-    root = Insert(root, 10);
-    root = Insert(root, 5);
+    head = circleLinkedList.Push_Front(head, 20);
+    head = circleLinkedList.Push_Front(head, 10);
 
-    std::cout << FindMax(root) << std::endl;
-    std::cout << FindMin(root) << std::endl;
+    head = circleLinkedList.Push_Back(head, 30);
+
+    circleLinkedList.Information(head);
+
 
 
 
